@@ -16,6 +16,7 @@ Crie `src/content/badges/0N-lider.md` (numerado em ordem, ex: `03-whitney.md`):
 ---
 leader: Whitney
 badge_icon: plain
+team: [croconaw, elekid, zubat, gastly, larvitar]
 ---
 ```
 
@@ -31,6 +32,8 @@ badge_icon: plain
 | Jasmine | `mineral` | | Sabrina | `marsh` |
 | Pryce | `glacier` | | Blaine | `volcano` |
 | Clair | `rising` | | Blue | `earth` |
+
+`team` é o time que você usou naquela luta (nomes de espécie em inglês) — aparece na página "Times por líder".
 
 ### Evoluiu um Pokémon ou fez uma captura importante
 
