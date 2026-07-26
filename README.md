@@ -1,8 +1,8 @@
 # Fernando's Journey — Pokémon Crystal Legacy: Timeless Tracker
 
-Site de acompanhamento da minha run de [Pokémon Crystal Legacy: Timeless Version](https://erick-tmr.github.io/Pokemon_Crystal_Legacy_Timeless/) no Game Boy: insígnias conquistadas (com trainer card de cada uma), time atual e os eventos importantes (evoluções, capturas) que rolam entre um ginásio e outro.
+Site de acompanhamento da minha run de [Pokémon Crystal Legacy: Timeless Version](https://erick-tmr.github.io/Pokemon_Crystal_Legacy_Timeless/) no Game Boy: insígnias conquistadas, time atual e os eventos importantes (evoluções, capturas) que rolam entre um ginásio e outro.
 
-Feito com [Astro](https://astro.build). Deploy automático na Vercel a cada push.
+Feito com [Astro](https://astro.build). Deploy automático na Vercel a cada push. Todos os sprites (Pokémon e ícones de insígnia) vêm de fontes públicas — não precisa anexar imagem na mão.
 
 ## Como atualizar o progresso
 
@@ -10,22 +10,31 @@ Não tem admin nem formulário — é tudo arquivo. Depois de jogar, editar/cria
 
 ### Conquistou uma insígnia
 
-1. Gere um trainer card (ex: no [pokecharms.com](https://www.pokecharms.com/)) e salve o PNG em `public/trainer-cards/`.
-2. Crie `src/content/badges/0N-lider.md` (numerado em ordem, ex: `03-whitney.md`):
+Crie `src/content/badges/0N-lider.md` (numerado em ordem, ex: `03-whitney.md`):
 
-   ```markdown
-   ---
-   gym: Goldenrod City
-   leader: Whitney
-   trainer_card: whitney-card.png
-   ---
+```markdown
+---
+leader: Whitney
+badge_icon: plain
+---
+```
 
-   Observações sobre a luta (opcional).
-   ```
+`badge_icon` é o nome do arquivo em `public/badges/` (sem `.png`). Já tem os 16 ícones prontos (8 de Johto + 8 de Kanto), recortados de `gfx/trainer_card/johto_badges.png` e `kanto_badges.png` do próprio jogo:
+
+| Johto | ícone | | Kanto | ícone |
+| :--- | :--- | :--- | :--- | :--- |
+| Falkner | `zephyr` | | Brock | `boulder` |
+| Bugsy | `hive` | | Misty | `cascade` |
+| Whitney | `plain` | | Lt. Surge | `thunder` |
+| Morty | `fog` | | Erika | `rainbow` |
+| Chuck | `storm` | | Janine | `soul` |
+| Jasmine | `mineral` | | Sabrina | `marsh` |
+| Pryce | `glacier` | | Blaine | `volcano` |
+| Clair | `rising` | | Blue | `earth` |
 
 ### Evoluiu um Pokémon ou fez uma captura importante
 
-Crie `src/content/timeline/nome-do-evento.md`. O nome do Pokémon (`pokemon` / `evolved_from`) precisa bater com o nome da pasta de sprites do jogo em [`gfx/pokemon/`](https://github.com/erick-tmr/Pokemon_Crystal_Legacy_Timeless/tree/main/gfx/pokemon) — os sprites são puxados automaticamente de lá, não precisa anexar imagem.
+Crie `src/content/timeline/nome-do-evento.md`. O nome do Pokémon (`pokemon` / `evolved_from`) precisa bater com o nome da espécie em inglês (ex: `croconaw`, `bayleef`) — o sprite é resolvido automaticamente pelo National Dex.
 
 Evolução:
 
@@ -48,7 +57,7 @@ after_badge: 01-falkner
 ---
 ```
 
-`after_badge` é o id do arquivo de insígnia (`01-falkner`, sem `.md`) mais recente conquistado até aquele momento — é o que agrupa a timeline em "entre ginásio X e Y".
+`after_badge` é o id do arquivo de insígnia (`01-falkner`, sem `.md`) mais recente conquistado até aquele momento — é o que agrupa os eventos em "entre ginásio X e Y".
 
 ### Time mudou
 
