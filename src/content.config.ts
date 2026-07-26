@@ -16,6 +16,7 @@ const timeline = defineCollection({
     evolved_from: z.string().optional(),
     location: z.string(),
     after_badge: z.string(),
+    label: z.string().optional(),
   }),
 });
 

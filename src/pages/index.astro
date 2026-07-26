@@ -20,9 +20,7 @@ const groups = groupTimelineEvents(badges, events);
       {teamData.map((pokemon) => (
         <div class="team-member">
           <img src={spriteUrl(pokemon.species)} alt={pokemon.nickname ?? pokemon.species} />
-          <span>
-            {pokemon.nickname ?? pokemon.species} <small>Lv.{pokemon.level}</small>
-          </span>
+          <span>{pokemon.nickname ?? pokemon.species}</span>
         </div>
       ))}
     </div>
@@ -62,7 +60,9 @@ const groups = groupTimelineEvents(badges, events);
               {event.data.evolved_from && <span class="arrow">→</span>}
               <img src={spriteUrl(event.data.pokemon)} alt={event.data.pokemon} />
               <div class="desc">
-                {event.data.evolved_from ? (
+                {event.data.label ? (
+                  event.data.label
+                ) : event.data.evolved_from ? (
                   <Fragment>
                     {capitalize(event.data.evolved_from)} evoluiu para{' '}
                     <b>{capitalize(event.data.pokemon)}</b>!
