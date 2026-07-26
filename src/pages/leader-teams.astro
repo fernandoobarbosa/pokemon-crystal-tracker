@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
-import { spriteUrl } from '../lib/sprites';
+import { spriteUrl, trainerSpriteUrl } from '../lib/sprites';
 
 const badges = (await getCollection('badges')).sort((a, b) => a.id.localeCompare(b.id));
 ---
@@ -10,7 +10,11 @@ const badges = (await getCollection('badges')).sort((a, b) => a.id.localeCompare
   {badges.length === 0 && <p class="empty-state">Nenhuma insígnia registrada ainda.</p>}
   {badges.map((badge) => (
     <div class="panel">
-      <div class="panel-label">{badge.data.leader}</div>
+      <div class="leader-header">
+        <img src={trainerSpriteUrl(badge.data.leader)} alt={badge.data.leader} class="leader-sprite" />
+        <div class="panel-label leader-name">{badge.data.leader}</div>
+        <img src={`/badges/${badge.data.badge_icon}.png`} alt="" class="leader-badge-icon" />
+      </div>
       <div class="team-row">
         {badge.data.team.map((species) => (
           <div class="team-member">
@@ -27,5 +31,29 @@ const badges = (await getCollection('badges')).sort((a, b) => a.id.localeCompare
   .empty-state {
     font-size: 10px;
     color: var(--text-dim);
+  }
+
+  .leader-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .leader-sprite {
+    width: 40px;
+    height: 40px;
+    image-rendering: pixelated;
+  }
+
+  .leader-name {
+    margin-bottom: 0;
+    flex: 1;
+  }
+
+  .leader-badge-icon {
+    width: 24px;
+    height: 24px;
+    image-rendering: pixelated;
   }
 </style>

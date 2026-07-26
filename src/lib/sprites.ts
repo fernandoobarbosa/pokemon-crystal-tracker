@@ -10,3 +10,11 @@ export function spriteUrl(species: string): string {
   }
   return `${SPRITE_BASE}/${id}.png`;
 }
+
+const TRAINER_SPRITE_BASE =
+  'https://raw.githubusercontent.com/erick-tmr/Pokemon_Crystal_Legacy_Timeless/main/gfx/trainers';
+
+export function trainerSpriteUrl(leader: string): string {
+  const slug = leader.toLowerCase().replace(/\./g, '').replace(/\s+/g, '_');
+  return `${TRAINER_SPRITE_BASE}/${slug}.png`;
+}
