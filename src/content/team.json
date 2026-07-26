@@ -1,6 +1,7 @@
 [
-  { "species": "croconaw", "nickname": "Croco", "level": 22 },
-  { "species": "bayleef", "level": 20 },
-  { "species": "noctowl", "level": 18 },
-  { "species": "geodude", "level": 16 }
+  { "species": "croconaw" },
+  { "species": "elekid" },
+  { "species": "crobat" },
+  { "species": "gastly" },
+  { "species": "larvitar" }
 ]
