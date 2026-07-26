@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { spriteUrl } from '../lib/sprites';
+
+const badges = (await getCollection('badges')).sort((a, b) => a.id.localeCompare(b.id));
+---
+
+<BaseLayout title="Times por líder — Fernando's Journey">
+  {badges.length === 0 && <p class="empty-state">Nenhuma insígnia registrada ainda.</p>}
+  {badges.map((badge) => (
+    <div class="panel">
+      <div class="panel-label">{badge.data.leader}</div>
+      <div class="team-row">
+        {badge.data.team.map((species) => (
+          <div class="team-member">
+            <img src={spriteUrl(species)} alt={species} />
+            <span>{species}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  ))}
+</BaseLayout>
+
+<style>
+  .empty-state {
+    font-size: 10px;
+    color: var(--text-dim);
+  }
+</style>

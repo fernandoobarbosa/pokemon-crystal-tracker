@@ -6,6 +6,7 @@ const badges = defineCollection({
   schema: z.object({
     leader: z.string(),
     badge_icon: z.string(),
+    team: z.array(z.string()),
   }),
 });
 
