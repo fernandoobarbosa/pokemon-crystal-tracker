@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { spriteUrl } from '../lib/sprites';
+import { capitalize } from '../lib/format';
 import { groupTimelineEvents } from '../lib/timeline';
 import teamData from '../content/team.json';
 
@@ -10,34 +11,9 @@ const TOTAL_GYMS = 8;
 const badges = (await getCollection('badges')).sort((a, b) => a.id.localeCompare(b.id));
 const events = await getCollection('timeline');
 const groups = groupTimelineEvents(badges, events);
-
-const latestBadge = badges.at(-1);
-const currentStretch = groups.at(-1);
 ---
 
 <BaseLayout title="Fernando's Journey — Home">
-  {latestBadge && (
-    <div class="panel">
-      <div class="panel-label">
-        Último trainer card (Insígnia {badges.length}: {latestBadge.data.leader})
-      </div>
-      <img
-        src={`/trainer-cards/${latestBadge.data.trainer_card}`}
-        alt={`Trainer card - ${latestBadge.data.leader}`}
-        class="trainer-card"
-      />
-    </div>
-  )}
-
-  <div class="panel">
-    <div class="panel-label">Insígnias ({badges.length}/{TOTAL_GYMS})</div>
-    <div class="badge-row">
-      {Array.from({ length: TOTAL_GYMS }).map((_, i) => (
-        <div class={`badge-slot ${i < badges.length ? 'earned' : 'empty'}`} />
-      ))}
-    </div>
-  </div>
-
   <div class="panel">
     <div class="panel-label">Time atual</div>
     <div class="team-row">
@@ -52,44 +28,60 @@ const currentStretch = groups.at(-1);
     </div>
   </div>
 
-  {currentStretch && (
-    <div class="panel stretch-panel">
-      <div class="panel-label">Timeline · Trecho atual</div>
-      <div class="stretch-label">{currentStretch.label}</div>
-      <img src={spriteUrl('celebi')} alt="" class="celebi-watermark" />
+  <div class="panel">
+    <div class="panel-label">Insígnias ({badges.length}/{TOTAL_GYMS})</div>
+    <div class="badge-row">
+      {Array.from({ length: TOTAL_GYMS }).map((_, i) => {
+        const badge = badges[i];
+        if (!badge) {
+          return <div class="badge-slot empty">???</div>;
+        }
+        return (
+          <div class="badge-slot earned">
+            <img src={`/badges/${badge.data.badge_icon}.png`} alt={badge.data.leader} />
+            <span>{badge.data.leader}</span>
+          </div>
+        );
+      })}
     </div>
-  )}
+  </div>
+
+  <div class="panel-label" style="padding: 0 4px;">Eventos</div>
+  {groups.length === 0 && <p class="empty-state">Nenhum evento registrado ainda.</p>}
+  {groups.map((group) => (
+    <Fragment>
+      <div class="section-label">◆ {group.label} ◆</div>
+      <div class="timeline">
+        {group.events.map((event) => (
+          <div class="event">
+            <div class="location">{event.data.location}</div>
+            <div class="event-body">
+              {event.data.evolved_from && (
+                <img src={spriteUrl(event.data.evolved_from)} alt={event.data.evolved_from} />
+              )}
+              {event.data.evolved_from && <span class="arrow">→</span>}
+              <img src={spriteUrl(event.data.pokemon)} alt={event.data.pokemon} />
+              <div class="desc">
+                {event.data.evolved_from ? (
+                  <Fragment>
+                    {capitalize(event.data.evolved_from)} evoluiu para{' '}
+                    <b>{capitalize(event.data.pokemon)}</b>!
+                  </Fragment>
+                ) : (
+                  <Fragment>
+                    Capturou um <b>{capitalize(event.data.pokemon)}</b>
+                  </Fragment>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </Fragment>
+  ))}
 </BaseLayout>
 
 <style>
-  .trainer-card {
-    display: block;
-    max-width: 100%;
-    border: 1px solid var(--border);
-  }
-
-  .badge-row {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-  }
-
-  .badge-slot {
-    width: 26px;
-    height: 26px;
-    border: 1px solid var(--border);
-  }
-
-  .badge-slot.earned {
-    background: var(--border-strong);
-  }
-
-  .badge-slot.empty {
-    background: var(--bg);
-    border-style: dashed;
-    border-color: var(--border-empty);
-  }
-
   .team-row {
     display: flex;
     gap: 10px;
@@ -113,22 +105,110 @@ const currentStretch = groups.at(-1);
     border: 1px solid var(--border);
   }
 
-  .stretch-panel {
-    position: relative;
-    overflow: hidden;
-    margin-bottom: 0;
+  .badge-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
   }
 
-  .stretch-label {
-    font-size: 9px;
+  .badge-slot {
+    width: 56px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 4px;
+    border: 1px solid var(--border);
+    font-size: 8px;
+    text-align: center;
   }
 
-  .celebi-watermark {
-    position: absolute;
-    right: 8px;
-    bottom: 6px;
-    width: 18px;
+  .badge-slot.earned {
+    background: var(--border-strong);
+    color: var(--bg);
+  }
+
+  .badge-slot.earned img {
+    width: 20px;
+    height: 20px;
     image-rendering: pixelated;
-    opacity: 0.35;
+  }
+
+  .badge-slot.empty {
+    background: var(--bg);
+    border-style: dashed;
+    border-color: var(--border-empty);
+    color: var(--text-dim);
+    opacity: 0.6;
+  }
+
+  .empty-state {
+    font-size: 10px;
+    color: var(--text-dim);
+  }
+
+  .section-label {
+    border: 1px solid var(--border);
+    background: rgba(126, 232, 250, 0.06);
+    padding: 6px 10px;
+    margin-bottom: 10px;
+    font-size: 9px;
+    color: var(--text-dim);
+    text-align: center;
+  }
+
+  .timeline {
+    border-left: 2px solid var(--border);
+    padding-left: 12px;
+    margin: 0 0 16px 6px;
+  }
+
+  .event {
+    margin-bottom: 14px;
+    position: relative;
+  }
+
+  .event::before {
+    content: '';
+    position: absolute;
+    left: -17px;
+    top: 3px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border-strong);
+  }
+
+  .location {
+    font-size: 8px;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+
+  .event-body {
+    border: 1px solid var(--border);
+    background: var(--panel);
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .event-body img {
+    width: 32px;
+    height: 32px;
+    image-rendering: pixelated;
+    background: #1c3158;
+    border: 1px solid var(--border);
+  }
+
+  .arrow {
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  .desc {
+    font-size: 9px;
   }
 </style>

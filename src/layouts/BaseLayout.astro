@@ -6,13 +6,6 @@ interface Props {
 }
 
 const { title } = Astro.props;
-const currentPath = Astro.url.pathname;
-
-const navItems = [
-  { href: '/', label: 'Home' },
-  { href: '/badges', label: 'Insígnias' },
-  { href: '/timeline', label: 'Timeline' },
-];
 ---
 
 <!doctype html>
@@ -32,14 +25,6 @@ const navItems = [
         </div>
       </header>
 
-      <nav class="nav">
-        {navItems.map((item) => (
-          <a href={item.href} class={currentPath === item.href ? 'active' : ''}>
-            {item.label}
-          </a>
-        ))}
-      </nav>
-
       <main>
         <slot />
       </main>
@@ -56,7 +41,6 @@ const navItems = [
     --border-empty: #2a4066;
     --text: #dfe8f0;
     --text-dim: #8ba3c0;
-    --emerald: #2f8f6e;
   }
 
   * {
@@ -109,27 +93,6 @@ const navItems = [
     letter-spacing: 1px;
     margin: 4px 0 0;
     text-align: center;
-  }
-
-  .nav {
-    display: flex;
-    gap: 4px;
-    justify-content: center;
-    padding: 10px;
-    font-size: 9px;
-  }
-
-  .nav a {
-    border: 1px solid var(--border);
-    padding: 4px 10px;
-    background: var(--panel);
-    color: var(--text-dim);
-    text-decoration: none;
-  }
-
-  .nav a.active {
-    background: var(--border);
-    color: var(--text);
   }
 
   main {

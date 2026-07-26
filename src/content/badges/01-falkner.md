@@ -1,7 +1,4 @@
 ---
-gym: Violet City
 leader: Falkner
-trainer_card: falkner-card.png
+badge_icon: zephyr
 ---
-
-Vitória apertada — o Pidgeotto quase virou o jogo, mas o Totodile aguentou até o fim.

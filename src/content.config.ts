@@ -4,9 +4,8 @@ import { glob } from 'astro/loaders';
 const badges = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/badges' }),
   schema: z.object({
-    gym: z.string(),
     leader: z.string(),
-    trainer_card: z.string(),
+    badge_icon: z.string(),
   }),
 });
 
