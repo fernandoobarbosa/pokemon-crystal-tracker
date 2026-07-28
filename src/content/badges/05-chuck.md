@@ -1,5 +1,5 @@
 ---
 leader: Chuck
-badge_icon: plain
+badge_icon: storm
 team: [feraligatr, electabuzz, crobat, haunter, larvitar]
 ---
